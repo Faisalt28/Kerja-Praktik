@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_book"
+        android:icon="@drawable/baseline_book_24"
+        android:title="@string/book" />
+
+    <item
+        android:id="@+id/navigation_add"
+        android:icon="@drawable/baseline_add_circle_outline_24"
+        android:title="@string/add" />
+
+    <item
+        android:id="@+id/navigation_balance"
+        android:icon="@drawable/baseline_account_balance_wallet_24"
+        android:title="@string/balance" />
+
+    <item
+        android:id="@+id/navigation_currency"
+        android:icon="@drawable/baseline_currency_exchange_24"
+        android:title="@string/currency" />
+</menu>

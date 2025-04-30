@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">ArtoZ</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="book">Buku</string>
+    <string name="balance">Saldo</string>
+    <string name="expense">Pengeluaran</string>
+    <string name="income">Pemasukan</string>
+    <string name="nominal">Nominal (Rp)</string>
+    <string name="save">Simpan</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="other_category">Kategori lainnya</string>
+    <string name="btn_update_transaction">Perbarui</string>
+    <string name="transaction_updated">Transaksi diperbarui</string>
+    <string name="transaction_saved">Transaksi berhasil disimpan!</string>
+    <string name="invalid_input">Masukan tidak valid</string>
+    <string name="add">Tambah</string>
+    <string name="datepicker">Pilih Tanggal</string>
+    <string name="back_to_start">Kembali ke halaman awal</string>
+    <string name="detail_transaction">Detail Transaksi</string>
+    <string name="category">Kategori</string>
+    <string name="amount">Jumlah</string>
+    <string name="date">Tanggal</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Hapus</string>
+    <string name="your_balance">Saldo Anda</string>
+    <string name="empty_data">Tidak ada transaksi</string>
+    <string name="no_transaction">Tidak ada transaksi</string>
+    <string name="filter">Filter</string>
+    <string name="rp_0">Rp 0</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="currency">Mata Uang</string>
+    <string name="icon_balance">Ikon saldo</string>
+    <string name="icon_income">Ikon pemasukan</string>
+    <string name="total_income">Total Pemasukan</string>
+    <string name="icon_expense">Ikon pengeluaran</string>
+    <string name="total_expense">Total Pengeluaran</string>
+    <string name="type">Type</string>
+    <string name="transaction_icon">Transaction Icon</string>
+</resources>

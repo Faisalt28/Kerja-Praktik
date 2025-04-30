@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_book">
+
+    <fragment
+        android:id="@+id/navigation_balance"
+        android:name="com.praktikerja.artoz.ui.balance.BalanceFragment"
+        android:label="@string/balance"
+        tools:layout="@layout/fragment_balance" />
+
+    <fragment
+        android:id="@+id/navigation_book"
+        android:name="com.praktikerja.artoz.ui.book.BookFragment"
+        android:label="@string/book"
+        tools:layout="@layout/fragment_book" />
+
+    <activity
+        android:id="@+id/navigation_add"
+        android:name="com.praktikerja.artoz.ui.add_transaction.AddActivity"
+        android:label="@string/add"
+        tools:layout="@layout/activity_add" />
+
+    <fragment
+        android:id="@+id/navigation_currency"
+        android:name="com.praktikerja.artoz.ui.CurrencyFragment"
+        android:label="@string/currency"
+        tools:layout="@layout/fragment_currency" />
+</navigation>
