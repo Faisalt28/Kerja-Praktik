@@ -16,8 +16,6 @@ class TransactionAdapter(private val onItemClick: (TransactionEntity) -> Unit) :
     RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
 
     private var transactions: List<TransactionEntity> = emptyList()
-    private var exchangeRate: Double = 1.0 // Default tanpa konversi
-    private var selectedCurrency: String = "IDR" // Default mata uang
 
     class TransactionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imgIcon: ImageView = itemView.findViewById(R.id.imgIcon)
@@ -39,15 +37,21 @@ class TransactionAdapter(private val onItemClick: (TransactionEntity) -> Unit) :
         holder.textType.text = transaction.type
         holder.textCategory.text = transaction.category
 
-        // **Konversi jumlah transaksi berdasarkan exchange rate**
-        val convertedAmount = transaction.amount * exchangeRate
-        val formattedAmount = CurrencyFormatter.format(convertedAmount, selectedCurrency)
-
-        holder.textAmount.text = if (transaction.type == "Pemasukan") {
+        // Format jumlah dengan CurrencyFormatter dan tanda + atau -
+        val formattedAmount = CurrencyFormatter.formatRupiah(transaction.amount)
+        val amountText = if (transaction.type == "Pemasukan") {
             "+ $formattedAmount"
         } else {
             "- $formattedAmount"
         }
+        holder.textAmount.text = amountText
+
+        val colorRes = if (transaction.type == "Pemasukan") {
+            R.color.green
+        } else {
+            R.color.red
+        }
+        holder.textAmount.setTextColor(holder.itemView.context.getColor(colorRes))
 
         holder.textDate.text = formatDate(transaction.date)
 
@@ -61,13 +65,6 @@ class TransactionAdapter(private val onItemClick: (TransactionEntity) -> Unit) :
     fun submitList(newList: List<TransactionEntity>) {
         transactions = newList
         notifyDataSetChanged()
-    }
-
-    // **Memperbarui nilai kurs & mata uang yang dipilih**
-    fun updateExchangeRate(newRate: Double, currencyCode: String) {
-        exchangeRate = newRate
-        selectedCurrency = currencyCode
-        notifyDataSetChanged() // **Refresh UI**
     }
 
     private fun formatDate(timestamp: Long): String {

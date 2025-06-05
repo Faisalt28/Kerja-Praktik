@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [TransactionEntity::class], version = 1, exportSchema = false)
+@Database(entities = [TransactionEntity::class], version = 2, exportSchema = false)
 abstract class TransactionDatabase : RoomDatabase() {
     abstract fun transactionDao(): TransactionDao
 
@@ -19,7 +19,9 @@ abstract class TransactionDatabase : RoomDatabase() {
                     context.applicationContext,
                     TransactionDatabase::class.java,
                     "transaction_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration() // akan menghapus database lama dan buat ulang yang baru, jadi Room tidak akan crash saat identitas hash-nya berubah.
+                    .build()
                 INSTANCE = instance
                 instance
             }

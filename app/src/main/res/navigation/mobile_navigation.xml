@@ -22,10 +22,4 @@
         android:name="com.praktikerja.artoz.ui.add_transaction.AddActivity"
         android:label="@string/add"
         tools:layout="@layout/activity_add" />
-
-    <fragment
-        android:id="@+id/navigation_currency"
-        android:name="com.praktikerja.artoz.ui.CurrencyFragment"
-        android:label="@string/currency"
-        tools:layout="@layout/fragment_currency" />
 </navigation>

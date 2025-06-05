@@ -69,6 +69,7 @@
             android:layout_height="wrap_content"
             android:text="@string/rp_0"
             android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
             android:textStyle="bold"
             android:textColor="@color/red"
             android:layout_gravity="end"

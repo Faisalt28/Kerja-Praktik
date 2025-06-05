@@ -1,13 +1,10 @@
 <resources>
     <string name="app_name">ArtoZ</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
     <string name="book">Buku</string>
     <string name="balance">Saldo</string>
     <string name="expense">Pengeluaran</string>
     <string name="income">Pemasukan</string>
-    <string name="nominal">Nominal (Rp)</string>
+    <string name="nominal">Nominal</string>
     <string name="save">Simpan</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="other_category">Kategori lainnya</string>
@@ -27,11 +24,8 @@
     <string name="your_balance">Saldo Anda</string>
     <string name="empty_data">Tidak ada transaksi</string>
     <string name="no_transaction">Tidak ada transaksi</string>
-    <string name="filter">Filter</string>
     <string name="rp_0">Rp 0</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="currency">Mata Uang</string>
     <string name="icon_balance">Ikon saldo</string>
     <string name="icon_income">Ikon pemasukan</string>
     <string name="total_income">Total Pemasukan</string>
@@ -39,4 +33,6 @@
     <string name="total_expense">Total Pengeluaran</string>
     <string name="type">Type</string>
     <string name="transaction_icon">Transaction Icon</string>
+    <string name="layout">Layout</string>
+    <string name="search_hint">Cari transaksi...</string>
 </resources>

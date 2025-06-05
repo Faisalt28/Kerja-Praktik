@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:paddingTop="8dp"
     tools:context=".ui.add_transaction.AddActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,8 +42,8 @@
                 android:drawableTint="@color/black"
                 android:padding="8dp"
                 android:text="@string/expense"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/poppins_bold"
+                android:textSize="14sp"/>
 
             <RadioButton
                 android:id="@+id/rbIncome"
@@ -54,8 +55,8 @@
                 android:drawableEnd="@drawable/income"
                 android:drawableTint="@color/black"
                 android:text="@string/income"
-                android:textStyle="bold"
-                android:textSize="13sp" />
+                android:fontFamily="@font/poppins_bold"
+                android:textSize="14sp"/>
         </RadioGroup>
 
         <!-- RecyclerView untuk menampilkan opsi -->

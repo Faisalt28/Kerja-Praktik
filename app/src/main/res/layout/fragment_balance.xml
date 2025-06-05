@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="8dp"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,10 +42,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:fontFamily="@font/interstellar"
+                    android:fontFamily="@font/poppins_bold"
                     android:text="@string/your_balance"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -52,10 +53,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:fontFamily="@font/digit"
+                    android:fontFamily="@font/poppins_medium"
                     android:text="@string/rp_0"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -109,6 +110,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/total_income"
                     android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_bold"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -119,6 +121,7 @@
                     android:layout_marginTop="4dp"
                     android:text="@string/rp_0"
                     android:textColor="@color/green"
+                    android:fontFamily="@font/poppins_medium"
                     android:textSize="14sp"
                     android:textStyle="bold"/>
             </LinearLayout>
@@ -150,6 +153,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/total_expense"
                     android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_bold"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -160,6 +164,7 @@
                     android:layout_marginTop="4dp"
                     android:text="@string/rp_0"
                     android:textColor="@color/red"
+                    android:fontFamily="@font/poppins_medium"
                     android:textSize="14sp"
                     android:textStyle="bold"/>
             </LinearLayout>

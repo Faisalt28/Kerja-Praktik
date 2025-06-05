@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.praktikerja.artoz.databinding.FragmentBalanceBinding
 import com.praktikerja.artoz.utils.CurrencyFormatter
-import com.praktikerja.artoz.utils.PreferenceManager
 import com.praktikerja.artoz.viewmodel.TransactionViewModel
 
 class BalanceFragment : Fragment() {
@@ -18,11 +17,9 @@ class BalanceFragment : Fragment() {
     private var _binding: FragmentBalanceBinding? = null
     private val binding get() = _binding!!
     private lateinit var transactionViewModel: TransactionViewModel
-    private lateinit var prefManager: PreferenceManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentBalanceBinding.inflate(inflater, container, false)
-        prefManager = PreferenceManager(requireContext())
         return binding.root
     }
 
@@ -42,14 +39,14 @@ class BalanceFragment : Fragment() {
     }
 
     private fun updateUI(amount: Double?, textView: android.widget.TextView) {
-        val convertedAmount = (amount ?: 0.0) * prefManager.getExchangeRate()
-        textView.text = CurrencyFormatter.format(convertedAmount, prefManager.getCurrency())
+        val value = amount ?: 0.0
+        textView.text = CurrencyFormatter.formatRupiah(value)
         updateChart()
     }
 
     private fun updateChart() {
-        val income = (transactionViewModel.totalIncome.value ?: 0.0) * prefManager.getExchangeRate()
-        val expense = (transactionViewModel.totalExpense.value ?: 0.0) * prefManager.getExchangeRate()
+        val income = transactionViewModel.totalIncome.value ?: 0.0
+        val expense = transactionViewModel.totalExpense.value ?: 0.0
         val htmlContent = """
             <!DOCTYPE html>
             <html>

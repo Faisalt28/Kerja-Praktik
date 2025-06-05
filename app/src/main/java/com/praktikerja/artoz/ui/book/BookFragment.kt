@@ -1,7 +1,6 @@
 package com.praktikerja.artoz.ui.book
 
 import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,8 +17,7 @@ import com.praktikerja.artoz.adapter.TransactionAdapter
 import com.praktikerja.artoz.data.TransactionEntity
 import com.praktikerja.artoz.databinding.FragmentBookBinding
 import com.praktikerja.artoz.ui.add_transaction.AddActivity
-import com.praktikerja.artoz.utils.CurrencyFormatter
-import com.praktikerja.artoz.utils.PreferenceManager
+import com.praktikerja.artoz.utils.CurrencyFormatter.formatRupiah
 import com.praktikerja.artoz.viewmodel.TransactionViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,27 +27,16 @@ class BookFragment : Fragment() {
     private lateinit var transactionViewModel: TransactionViewModel
     private lateinit var adapter: TransactionAdapter
     private lateinit var binding: FragmentBookBinding
-    private var selectedDate: Long? = null
-    private lateinit var preferenceManager: PreferenceManager
-    private var selectedCurrency = "IDR"
-    private var exchangeRate = 1.0
     private var isStaggedGridLayout = false
+    private var allTransactions: List<TransactionEntity> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentBookBinding.inflate(inflater, container, false)
-        preferenceManager = PreferenceManager(requireContext())
-
-        loadCurrencySettings()
         setupUI()
         return binding.root
-    }
-
-    private fun loadCurrencySettings() {
-        selectedCurrency = preferenceManager.getCurrency()
-        exchangeRate = preferenceManager.getExchangeRate().toDouble()
     }
 
     private fun setupUI() {
@@ -57,36 +44,50 @@ class BookFragment : Fragment() {
         adapter = TransactionAdapter { transaction -> showTransactionDetailDialog(transaction) }
         binding.recyclerView.adapter = adapter
 
-        // Pastikan adapter diperbarui dengan exchange rate saat ini
-        adapter.updateExchangeRate(exchangeRate, selectedCurrency)
-
         transactionViewModel = ViewModelProvider(this)[TransactionViewModel::class.java]
         transactionViewModel.allTransactions.observe(viewLifecycleOwner) { transactions ->
             transactions?.let {
-                val sortedTransactions = it.sortedByDescending { transaction -> transaction.date }
-                adapter.submitList(sortedTransactions)
-                updateTotals(sortedTransactions)
-            }
-        }
-
-        binding.toggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            val btnFilter = binding.btnFilter
-            if (checkedId == R.id.btnFilter) {
-                if (isChecked) {
-                    showDatePickerDialog()
-                    btnFilter.icon = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_filter_list_alt_24)
-                    btnFilter.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorActive))
-                } else {
-                    resetTransactions()
-                    btnFilter.icon = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_filter_alt_off_24)
-                    btnFilter.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorInactive))
-                }
+                allTransactions = it.sortedByDescending { transaction -> transaction.date }
+                adapter.submitList(allTransactions)
+                updateTotals(allTransactions)
             }
         }
 
         binding.btnLayout.setOnClickListener {
             toggleLayoutManager()
         }
+
+        setupSearch()
+    }
+
+    private fun setupSearch() {
+        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let { searchTransactions(it) }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let { searchTransactions(it) }
+                return true
+            }
+        })
+    }
+
+    private fun searchTransactions(query: String) {
+        val filtered = allTransactions.filter { transaction ->
+            val matchesCategoryOrAmount = transaction.category.contains(query, ignoreCase = true) ||
+                    transaction.amount.toString().contains(query)
+
+            val formattedDate = formatDate(transaction.date)
+            val matchesDate = formattedDate.contains(query, ignoreCase = true)
+
+            val matchesType = transaction.type.contains(query, ignoreCase = true)
+
+            matchesCategoryOrAmount || matchesDate || matchesType
+        }
+        adapter.submitList(filtered)
+        updateTotals(filtered)
     }
 
     private fun toggleLayoutManager() {
@@ -101,12 +102,11 @@ class BookFragment : Fragment() {
         }
     }
 
-
     private fun showTransactionDetailDialog(transaction: TransactionEntity) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_transaction_detail, null)
         val dialog = AlertDialog.Builder(requireContext()).setView(dialogView).create()
 
-        val formattedAmount = CurrencyFormatter.format(transaction.amount * exchangeRate, selectedCurrency)
+        val formattedAmount = formatRupiah(transaction.amount)
         dialogView.findViewById<TextView>(R.id.tvCategory).text = transaction.category
         dialogView.findViewById<TextView>(R.id.tvAmount).text = formattedAmount
         dialogView.findViewById<TextView>(R.id.tvDate).text = formatDate(transaction.date)
@@ -141,53 +141,12 @@ class BookFragment : Fragment() {
             .show()
     }
 
-    private fun showDatePickerDialog() {
-        val calendar = Calendar.getInstance()
-        DatePickerDialog(
-            requireContext(),
-            { _, year, month, dayOfMonth ->
-                selectedDate = Calendar.getInstance().apply { set(year, month, dayOfMonth) }.timeInMillis
-                filterTransactionsByDate()
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        ).show()
-    }
-
-    private fun filterTransactionsByDate() {
-        selectedDate?.let { date ->
-            val selectedCalendar = Calendar.getInstance().apply { timeInMillis = date }
-
-            transactionViewModel.allTransactions.value?.let { transactions ->
-                val filteredTransactions = transactions.filter {
-                    val transactionCalendar = Calendar.getInstance().apply { timeInMillis = it.date }
-                    transactionCalendar.get(Calendar.YEAR) == selectedCalendar.get(Calendar.YEAR) &&
-                            transactionCalendar.get(Calendar.MONTH) == selectedCalendar.get(Calendar.MONTH) &&
-                            transactionCalendar.get(Calendar.DAY_OF_MONTH) == selectedCalendar.get(Calendar.DAY_OF_MONTH)
-                }.sortedByDescending { it.date }
-
-                adapter.submitList(filteredTransactions)
-                updateTotals(filteredTransactions)
-            }
-        }
-    }
-
-    private fun resetTransactions() {
-        transactionViewModel.allTransactions.value?.let { transactions ->
-            val sortedTransactions = transactions.sortedByDescending { it.date }
-            adapter.submitList(sortedTransactions)
-            updateTotals(sortedTransactions)
-            binding.emptyView.visibility = if (sortedTransactions.isEmpty()) View.VISIBLE else View.GONE
-        }
-    }
-
     private fun updateTotals(transactions: List<TransactionEntity>) {
         val totalIncome = transactions.filter { it.type == "Pemasukan" }.sumOf { it.amount }
         val totalExpense = transactions.filter { it.type == "Pengeluaran" }.sumOf { it.amount }
 
-        binding.tvTotalIncomeAmount.text = CurrencyFormatter.format(totalIncome * exchangeRate, selectedCurrency)
-        binding.tvTotalExpenseAmount.text = CurrencyFormatter.format(totalExpense * exchangeRate, selectedCurrency)
+        binding.tvTotalIncomeAmount.text = formatRupiah(totalIncome)
+        binding.tvTotalExpenseAmount.text = formatRupiah(totalExpense)
         binding.emptyView.visibility = if (transactions.isEmpty()) View.VISIBLE else View.GONE
     }
 
