@@ -56,15 +56,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
-    implementation ("com.google.android.material:material:1.10.0")
     // Room Database
     implementation("androidx.room:room-runtime:2.6.1") // Runtime library
     implementation("androidx.room:room-ktx:2.6.1") // Kotlin extensions and coroutines support
     ksp("androidx.room:room-compiler:2.6.1") // KSP for Room (menggantikan kapt)
     implementation ("com.airbnb.android:lottie:6.0.0")
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+//    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+//    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 }

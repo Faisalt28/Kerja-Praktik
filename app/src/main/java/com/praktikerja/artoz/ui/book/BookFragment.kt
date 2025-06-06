@@ -58,6 +58,15 @@ class BookFragment : Fragment() {
         }
 
         setupSearch()
+
+        binding.searchView.setOnClickListener {
+            binding.searchView.isIconified = false
+        }
+        binding.searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.searchView.isIconified = false
+            }
+        }
     }
 
     private fun setupSearch() {
