@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="12dp"
-    android:elevation="4dp"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
@@ -12,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/gradient_background"
-        android:padding="8dp">
+        android:padding="4dp">
 
         <!-- Bagian atas: Icon + Teks -->
         <LinearLayout
@@ -40,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/type"
                     android:textStyle="bold"
-                    android:textSize="13sp"
+                    android:textSize="12sp"
                     android:textColor="@color/medium_purple" />
 
                 <TextView
@@ -48,16 +47,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/category"
-                    android:textSize="13sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/textDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/date"
-                    android:textSize="13sp"
+                    android:textSize="12sp"
                     android:textColor="@color/gray" />
             </LinearLayout>
         </LinearLayout>
@@ -68,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/rp_0"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:fontFamily="@font/poppins_medium"
             android:textStyle="bold"
             android:textColor="@color/red"

@@ -21,8 +21,8 @@ class AddActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddBinding
     private val transactionViewModel: TransactionViewModel by viewModels()
-    private var selectedcategory: String? = null
-    private var selectedIconResId: Int = R.drawable.baseline_edit_note_24_large // Default ikon
+    private var selectedCategory: String? = null
+    private var selectedIconResId: Int = R.drawable.baseline_edit_note_24_large
     private var selectedDate: Long = System.currentTimeMillis()
     private var transaction: TransactionEntity? = null
 
@@ -32,7 +32,6 @@ class AddActivity : AppCompatActivity() {
         setContentView(binding.root)
         overridePendingTransition(R.anim.slide_in_up, 0)
 
-        // Ambil data dari intent (mode edit jika data ada)
         val transactionId = intent.getIntExtra("TRANSACTION_ID", -1)
         val amount = intent.getDoubleExtra("TRANSACTION_AMOUNT", 0.0)
         val category = intent.getStringExtra("TRANSACTION_CATEGORY")
@@ -43,27 +42,48 @@ class AddActivity : AppCompatActivity() {
         if (transactionId != -1 && category != null && type != null) {
             transaction = TransactionEntity(transactionId, type, category, amount, date, iconResId)
             setupEditMode(transaction!!)
+        } else {
+            setupTypeAndOptionsDefault()
         }
 
         setupUI()
     }
 
+    private fun formatAmount(amount: Double): String {
+        return if (amount % 1.0 == 0.0) amount.toInt().toString() else amount.toString()
+    }
+
     private fun setupEditMode(transaction: TransactionEntity) {
-        binding.etAmount.setText(transaction.amount.toString())
-        binding.etCategory.setText(transaction.category)
-        selectedcategory = transaction.category
-        selectedIconResId = transaction.iconResId
-        selectedDate = transaction.date
+        binding.etAmount.setText(formatAmount(transaction.amount))
         binding.btnSelectDate.text = formatDate(transaction.date)
-        binding.rgType.check(if (transaction.type == "Pemasukan") R.id.rbIncome else R.id.rbOutcome)
-        setupOptions(if (transaction.type == "Pemasukan") incomeOptions else expenseOptions)
+        selectedDate = transaction.date
+        selectedCategory = transaction.category
+        selectedIconResId = transaction.iconResId
+
+        if (transaction.type == "Pemasukan") {
+            binding.rbIncome.isChecked = true
+            setupOptions(incomeOptions, transaction.category)
+        } else {
+            binding.rbOutcome.isChecked = true
+            setupOptions(expenseOptions, transaction.category)
+        }
+
+        if (transaction.category == "Lainnya") {
+            binding.etCategory.visibility = View.VISIBLE
+            binding.etCategory.setText(transaction.category)
+        } else {
+            binding.etCategory.visibility = View.GONE
+        }
+
         binding.btnSave.text = getString(R.string.btn_update_transaction)
     }
 
-    private fun setupUI() {
+    private fun setupTypeAndOptionsDefault() {
         binding.rbOutcome.isChecked = true
         setupOptions(expenseOptions)
+    }
 
+    private fun setupUI() {
         binding.rgType.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.rbOutcome -> setupOptions(expenseOptions)
@@ -71,7 +91,6 @@ class AddActivity : AppCompatActivity() {
             }
         }
 
-        binding.etCategory.visibility = View.GONE
         binding.btnSelectDate.setOnClickListener { showDatePicker() }
         binding.btnSave.setOnClickListener { saveTransaction() }
         binding.btnBack.setOnClickListener {
@@ -81,17 +100,20 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun showDatePicker() {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = selectedDate
-
-        val datePickerDialog = DatePickerDialog(this, { _, year, month, day ->
-            val selectedCalendar = Calendar.getInstance()
-            selectedCalendar.set(year, month, day)
-            selectedDate = selectedCalendar.timeInMillis
-            binding.btnSelectDate.text = formatDate(selectedDate)
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
-
-        datePickerDialog.show()
+        val calendar = Calendar.getInstance().apply { timeInMillis = selectedDate }
+        val datePicker = DatePickerDialog(
+            this,
+            { _, year, month, dayOfMonth ->
+                val cal = Calendar.getInstance()
+                cal.set(year, month, dayOfMonth)
+                selectedDate = cal.timeInMillis
+                binding.btnSelectDate.text = formatDate(selectedDate)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePicker.show()
     }
 
     private fun saveTransaction() {
@@ -99,7 +121,7 @@ class AddActivity : AppCompatActivity() {
         val amount = amountText.toDoubleOrNull()
         val type = if (binding.rbOutcome.isChecked) "Pengeluaran" else "Pemasukan"
         val customCategory = binding.etCategory.text.toString()
-        val category = if (customCategory.isNotBlank()) customCategory else selectedcategory
+        val category = if (customCategory.isNotBlank()) customCategory else selectedCategory
 
         if (amount != null && category != null) {
             if (transaction == null) {
@@ -124,21 +146,21 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupOptions(options: List<Option>) {
-        binding.rvOptions.layoutManager = GridLayoutManager(this, 4)
-        binding.rvOptions.adapter = OptionAdapter(options) { selectedOption ->
+    private fun setupOptions(options: List<Option>, preselectLabel: String? = null) {
+        binding.rvOptions.layoutManager = GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false)
+        binding.rvOptions.adapter = OptionAdapter(options, { selectedOption ->
             if (selectedOption.label == "Lainnya") {
                 binding.etCategory.visibility = View.VISIBLE
                 binding.etCategory.requestFocus()
-                selectedcategory = null
+                selectedCategory = null
                 selectedIconResId = R.drawable.baseline_edit_note_24_large
             } else {
                 binding.etCategory.visibility = View.GONE
-                selectedcategory = selectedOption.label
-                selectedIconResId = selectedOption.icon
                 binding.etCategory.setText("")
+                selectedCategory = selectedOption.label
+                selectedIconResId = selectedOption.icon
             }
-        }
+        }, preselectLabel)
     }
 
     private fun formatDate(timestamp: Long): String {
@@ -146,21 +168,21 @@ class AddActivity : AppCompatActivity() {
         return sdf.format(Date(timestamp))
     }
 
-    private val expenseOptions = listOf(
+private val expenseOptions = listOf(
         Option(R.drawable.makan, "Makan"),
         Option(R.drawable.motorcycle, "Transportasi"),
         Option(R.drawable.house, "Sewa Kos"),
         Option(R.drawable.internet, "Internet"),
-        Option(R.drawable.college, "Kebutuhan Kuliah"),
+        Option(R.drawable.college, "Kuliah"),
         Option(R.drawable.games, "Hiburan"),
         Option(R.drawable.shopping, "Belanja"),
         Option(R.drawable.health, "Kesehatan"),
         Option(R.drawable.sport, "Olahraga"),
-        Option(R.drawable.coffee, "Jajan / Ngopi"),
-        Option(R.drawable.personal, "Keperluan Pribadi"),
-        Option(R.drawable.electronic, "Peralatan Elektronik"),
-        Option(R.drawable.charity, "Donasi / Amal"),
-        Option(R.drawable.event, "Acara / Kegiatan Kampus"),
+        Option(R.drawable.coffee, "Jajan"),
+        Option(R.drawable.personal, "Harian"),
+        Option(R.drawable.electronic, "Elektronik"),
+        Option(R.drawable.charity, "Donasi"),
+        Option(R.drawable.event, "Acara"),
         Option(R.drawable.holiday, "Liburan"),
         Option(R.drawable.baseline_edit_note_24_large, "Lainnya")
     )
@@ -168,13 +190,12 @@ class AddActivity : AppCompatActivity() {
     private val incomeOptions = listOf(
         Option(R.drawable.parent, "Orang Tua"),
         Option(R.drawable.scholarship, "Beasiswa"),
-        Option(R.drawable.salary, "Gaji Part-Time"),
+        Option(R.drawable.salary, "Part-Time"),
         Option(R.drawable.internship, "Magang"),
-        Option(R.drawable.freelance, "Freelance"),
-        Option(R.drawable.jualonline, "Jualan Online"),
-        Option(R.drawable.prize, "Hadiah Lomba"),
-        Option(R.drawable.loan, "Pinjaman dari Teman/Keluarga"),
-        Option(R.drawable.secondhand, "Jual Barang Bekas"),
+        Option(R.drawable.freelance, "Pekerja lepas"),
+        Option(R.drawable.jualonline, "Jualan"),
+        Option(R.drawable.prize, "Hadiah"),
+        Option(R.drawable.loan, "Pinjaman"),
         Option(R.drawable.amplop, "Uang Kaget"),
         Option(R.drawable.cash, "Bayaran pinjaman"),
         Option(R.drawable.baseline_edit_note_24_large, "Lainnya")

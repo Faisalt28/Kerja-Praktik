@@ -22,4 +22,10 @@
         android:name="com.praktikerja.artoz.ui.add_transaction.AddActivity"
         android:label="@string/add"
         tools:layout="@layout/activity_add" />
+
+    <fragment
+        android:id="@+id/navigation_about"
+        android:name="com.praktikerja.artoz.ui.about.AboutFragment"
+        android:label="@string/about"
+        tools:layout="@layout/fragment_about" />
 </navigation>

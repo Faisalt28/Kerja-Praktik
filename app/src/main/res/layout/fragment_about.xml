@@ -1,0 +1,311 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="35dp"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="8dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:background="@drawable/purple" >
+
+                <!-- Developer 1 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:minHeight="150dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/faisal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/name_ft"
+                        android:textSize="13sp"
+                        android:gravity="center"
+                        android:fontFamily="@font/poppins_bold"
+                        android:maxLines="2"
+                        android:ellipsize="end" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/nim_ft"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/poppins_medium" />
+                </LinearLayout>
+
+                <!-- Developer 2 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:minHeight="150dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/fauzul" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/name_mfh"
+                        android:textSize="13sp"
+                        android:gravity="center"
+                        android:fontFamily="@font/poppins_bold"
+                        android:maxLines="2"
+                        android:ellipsize="end" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/nim_mfh"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/poppins_medium" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/assetLabel"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:flexWrap="wrap"
+                app:justifyContent="flex_start">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_money_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Money Icon"
+                    android:onClick="onClickMoney" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_payment_method"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Payment Method"
+                    android:onClick="onClickPayment" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_food"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Food"
+                    android:onClick="onClickFood" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_motorcycle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Motorcycle"
+                    android:onClick="onClickMotorcycle" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_house"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="House"
+                    android:onClick="onClickHouse" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_internet_globe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Internet Globe"
+                    android:onClick="onClickInternet" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_student"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Student"
+                    android:onClick="onClickStudent" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_arcade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Arcade"
+                    android:onClick="onClickArcade" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_shopping_bags"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shopping Bags"
+                    android:onClick="onClickShopping" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_health_clinic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Health Clinic"
+                    android:onClick="onClickHealth" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_weightlifting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Weightlifting"
+                    android:onClick="onClickWeightlifting" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_coffee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Coffee"
+                    android:onClick="onClickCoffee" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_id_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ID Card"
+                    android:onClick="onClickIdCard" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_laptop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Laptop"
+                    android:onClick="onClickLaptop" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_charity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Charity"
+                    android:onClick="onClickCharity" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tickets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tickets"
+                    android:onClick="onClickTickets" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_camping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Camping"
+                    android:onClick="onClickCamping" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_family"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Family"
+                    android:onClick="onClickFamily" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_scholarship"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Scholarship"
+                    android:onClick="onClickScholarship" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_salesman"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Salesman"
+                    android:onClick="onClickSalesman" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_internship"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Internship"
+                    android:onClick="onClickInternship" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_writer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Writer"
+                    android:onClick="onClickWriter" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_ecommerce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ecommerce"
+                    android:onClick="onClickEcommerce" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_medal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Medal"
+                    android:onClick="onClickMedal" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_loan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Loan"
+                    android:onClick="onClickLoan" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_red_envelope"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Red Envelope"
+                    android:onClick="onClickRedEnvelope" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_cash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cash"
+                    android:onClick="onClickCash" />
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

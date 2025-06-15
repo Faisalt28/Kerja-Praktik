@@ -15,4 +15,9 @@
         android:id="@+id/navigation_balance"
         android:icon="@drawable/baseline_account_balance_wallet_24"
         android:title="@string/balance" />
+
+    <item
+        android:id="@+id/navigation_about"
+        android:icon="@drawable/baseline_info_outline_24"
+        android:title="@string/about" />
 </menu>

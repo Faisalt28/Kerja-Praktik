@@ -18,7 +18,10 @@ class BalanceFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var transactionViewModel: TransactionViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentBalanceBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -36,6 +39,10 @@ class BalanceFragment : Fragment() {
             settings.javaScriptEnabled = true
             webViewClient = WebViewClient()
         }
+
+        binding.chartTypeGroup.setOnCheckedChangeListener { _, _ ->
+            updateChart()
+        }
     }
 
     private fun updateUI(amount: Double?, textView: android.widget.TextView) {
@@ -47,38 +54,58 @@ class BalanceFragment : Fragment() {
     private fun updateChart() {
         val income = transactionViewModel.totalIncome.value ?: 0.0
         val expense = transactionViewModel.totalExpense.value ?: 0.0
+
+        val chartType = when {
+            binding.rbPie.isChecked -> "pie"
+            binding.rbBar.isChecked -> "bar"
+            else -> "pie"
+        }
+
+        val legendDisplay = if (chartType == "pie") "true" else "false"
+
         val htmlContent = """
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            </head>
-            <body>
-                <canvas id="myChart" width="300" height="300"></canvas>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                        var ctx = document.getElementById('myChart').getContext('2d');
-                        new Chart(ctx, {
-                            type: 'doughnut',
-                            data: {
-                                labels: ['Pemasukan', 'Pengeluaran'],
-                                datasets: [{
-                                    data: [$income, $expense],
-                                    backgroundColor: ['rgba(75, 192, 192, 0.8)', 'rgba(255, 159, 64, 0.8)'],
-                                    borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)'],
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        </head>
+        <body>
+            <canvas id="myChart" width="200" height="200"></canvas>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: '$chartType',
+                        data: {
+                            labels: ['Pemasukan', 'Pengeluaran'],
+                            datasets: [{
+                                data: [$income, $expense],
+                                backgroundColor: [
+                                    'rgba(54, 162, 235, 0.8)',
+                                    'rgba(255, 99, 132, 0.8)'
+                                ],
+                                borderColor: [
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(255, 99, 132, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: $legendDisplay
+                                }
                             }
-                        });
+                        }
                     });
-                </script>
-            </body>
-            </html>
-        """
+                });
+            </script>
+        </body>
+        </html>
+    """
         binding.webView.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null)
     }
 

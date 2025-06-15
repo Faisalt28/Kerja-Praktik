@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/medium_purple</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
         <!-- Disable dark mode. -->
         <item name="android:forceDarkAllowed" tools:ignore="NewApi">false</item>
